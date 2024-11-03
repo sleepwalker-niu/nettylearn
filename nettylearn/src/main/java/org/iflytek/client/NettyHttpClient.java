@@ -9,6 +9,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.*;
 import io.netty.buffer.Unpooled;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.iflytek.model.CustomRequestBody;
+
 import java.nio.charset.StandardCharsets;
 
 public class NettyHttpClient {
@@ -31,7 +33,7 @@ public class NettyHttpClient {
             Channel ch = b.connect(host, port).sync().channel();
 
             // 发送 GET 请求
-//            sendGetRequest(ch);
+            sendGetRequest(ch);
 
             // 发送 POST 请求
             sendPostRequest(ch);
@@ -44,7 +46,7 @@ public class NettyHttpClient {
 
     private void sendGetRequest(Channel channel) {
         // 创建 GET 请求
-        FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/resource?id=123&name=John");
+        FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "");
         request.headers().set(HttpHeaderNames.HOST, host);
         request.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
         request.headers().set(HttpHeaderNames.CONTENT_TYPE, "application/json");
@@ -56,12 +58,11 @@ public class NettyHttpClient {
     private void sendPostRequest(Channel channel) {
         try {
             // 创建 POST 请求并构造 JSON 请求体
-            ObjectMapper mapper = new ObjectMapper();
-//            String jsonBody = mapper.writeValueAsString(new User(1, "Alice"));
-            String jsonBody = mapper.writeValueAsString("Alice");
+            CustomRequestBody body=new CustomRequestBody("Hi there");
+            String jsonBody=body.toJson();
 
             FullHttpRequest request = new DefaultFullHttpRequest(
-                    HttpVersion.HTTP_1_1, HttpMethod.POST, "/api/user",
+                    HttpVersion.HTTP_1_1, HttpMethod.POST, "",
                     Unpooled.wrappedBuffer(jsonBody.getBytes(StandardCharsets.UTF_8)));
 
             // 设置请求头

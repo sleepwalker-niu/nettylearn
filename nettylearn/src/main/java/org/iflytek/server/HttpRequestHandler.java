@@ -22,8 +22,9 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
     private void handleGetRequest(ChannelHandlerContext ctx) {
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
-                ctx.alloc().buffer().writeBytes("Hello from Netty Server".getBytes(StandardCharsets.UTF_8))
+                ctx.alloc().buffer().writeBytes("Hello from Netty Server,you have sent a GET request".getBytes(StandardCharsets.UTF_8))
         );
+        response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
         ctx.writeAndFlush(response);
     }
@@ -36,7 +37,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
         FullHttpResponse response = new DefaultFullHttpResponse(
                 HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
-                ctx.alloc().buffer().writeBytes("Received".getBytes(StandardCharsets.UTF_8))
+                ctx.alloc().buffer().writeBytes(String.format("Hello from Netty Server,you have sent a POST request,the body is %s",body).getBytes(StandardCharsets.UTF_8))
         );
 
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());

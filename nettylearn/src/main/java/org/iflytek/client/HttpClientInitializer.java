@@ -14,8 +14,8 @@ public class HttpClientInitializer extends ChannelInitializer<SocketChannel> {
         ch.pipeline().addLast(new HttpObjectAggregator(65536));
 //        ch.pipeline().addLast(new HttpResponseDecoder());//HTTP编码
 //        ch.pipeline().addLast(new HttpRequestEncoder());//HTTP解码
-//        ch.pipeline().addLast(new HttpClientHandler());
-        ch.pipeline().addLast(new HttpClientHandler2());
+        ch.pipeline().addLast(new HttpClientHandler());
+//        ch.pipeline().addLast(new HttpClientHandler2());
 
     }
 }
