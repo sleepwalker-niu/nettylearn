@@ -9,6 +9,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.*;
 import io.netty.buffer.Unpooled;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.iflytek.common.CustomHeader;
+import org.iflytek.common.CustomMessage;
 import org.iflytek.model.CustomRequestBody;
 
 import java.nio.charset.StandardCharsets;
@@ -29,6 +31,7 @@ public class NettyHttpClient {
             b.group(group)
                     .channel(NioSocketChannel.class)
                     .handler(new HttpClientInitializer());
+//                    .handler(new CustomClientInitalizer());
 
             Channel ch = b.connect(host, port).sync().channel();
 
@@ -37,6 +40,9 @@ public class NettyHttpClient {
 
             // 发送 POST 请求
             sendPostRequest(ch);
+
+//            sendCustomRequest(ch);
+
 
             ch.closeFuture().sync(); // 等待连接关闭
         } finally {
@@ -77,5 +83,18 @@ public class NettyHttpClient {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendCustomRequest(Channel channel){
+        CustomMessage record = new CustomMessage();
+        CustomHeader header = new CustomHeader();
+        header.setReqId(System.currentTimeMillis());
+        header.setReqType('A');
+        record.setHeader(header);
+        String body="Hi there,this is a custom message";
+        record.setBody(body);
+
+        channel.writeAndFlush(record);
+        System.out.println("send Custom request");
     }
 }

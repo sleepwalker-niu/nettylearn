@@ -1,4 +1,5 @@
 package org.iflytek;
+import org.iflytek.server.NettyCustomServer;
 import org.iflytek.server.NettyHttpServer;
 
 public class ServerStarter {
@@ -6,7 +7,8 @@ public class ServerStarter {
         // 启动服务端
         new Thread(() -> {
             try {
-                new NettyHttpServer(8080).start();
+//                new NettyHttpServer(8080).start();
+                new NettyCustomServer(8080).start();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

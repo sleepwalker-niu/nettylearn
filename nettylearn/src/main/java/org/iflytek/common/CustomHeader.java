@@ -7,7 +7,7 @@ import lombok.Data;
 public class CustomHeader {
     private Long reqId;
 
-    private Byte reqType;
+    private Character reqType;
 
     private Integer reqLen;
 

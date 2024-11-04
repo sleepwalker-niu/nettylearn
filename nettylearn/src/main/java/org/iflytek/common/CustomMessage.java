@@ -5,5 +5,5 @@ import org.iflytek.model.CustomRequestBody;
 @Data
 public class CustomMessage {
     private CustomHeader header;
-    private CustomRequestBody body;
+    private String body;
 }

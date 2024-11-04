@@ -1,19 +1,17 @@
-package org.iflytek.server;
+package org.iflytek.client;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.stream.ChunkedWriteHandler;
 import org.iflytek.common.CustomMessageDecode;
 import org.iflytek.common.CustomMessageEncode;
+import org.iflytek.server.HttpRequestHandler;
 
-public class CustomServerInitalizer extends ChannelInitializer<SocketChannel> {
+public class CustomClientInitalizer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline().addLast(new CustomMessageDecode());
         ch.pipeline().addLast(new CustomMessageEncode());
-        ch.pipeline().addLast(new CustomRequestHandler());
+        ch.pipeline().addLast(new CustomClientHandler());
     }
+
 }
